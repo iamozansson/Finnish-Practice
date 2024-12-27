@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+print("Welcome to the Finnish practice game!")
 
 word_list = {
     "Olla": "To be",
@@ -83,12 +84,13 @@ word_list = {
 }
 
 for finnish, english in word_list.items():
-    print(f"What is the English translation of '{finnish}'?")
+    print(f"What is the Finnish translation of '{english}'?")
     answer = input("Your answer: ")
     
-    if answer.strip().lower() == english.lower():
+    if answer.strip().lower() == finnish.lower():
         print("Correct!")
     else:
-        print(f"Wrong! The correct answer is: {english}")
+        print(f"Wrong! The correct answer is: {finnish}")
     
     print()
+    
