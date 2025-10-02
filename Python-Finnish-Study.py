@@ -249,9 +249,6 @@ while True:
         "Paljon": "A lot",
         "Vähän": "A little",
         "Sää": "Weather",
-        "Millainen sää / Ilma tänään on?": "What's the weather like today?",
-        "On kaunis / hyvä ilma": "It's beautiful weather",
-        "On huono ilma": "It's terrible weather",
         "Aste": "Degree",
         "Kuuma": "Hot",
         "Helle": "Heat",
@@ -309,16 +306,7 @@ while True:
         "Ruskea": "Brown",
         "Harmaa": "Grey",
         "Oranssi": "Orange",
-        "Liila": "Lilac",
-        "Voitko auttaa minua?": "Can you help me?",
-        "Voitko puhua hitaasti?": "Can you speak slowly?",
-        "Voitko sanoa uudelleen?": "Can you say that again?",
-        "Miten sanotaan I love you suomeksi?": "How do you say I love you in Finnish?",
-        "Mitä thank you on suomeksi?": "What is thank you in Finnish?",
-        "Mitä sähköposti tarkoittaa?": "What does e-mail mean?",
-        "En tiedä": "I don't know",
-        "En ymmärrä": "I don't understand",
-        "Kiitos avusta": "Thanks for your help",
+        "Liila": "Lilac"
     }
 
     chapter_4 = {
