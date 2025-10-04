@@ -1,504 +1,72 @@
+import sqlite3
+
+conn = sqlite3.connect("Flashcards.db")
+cursor = conn.cursor()
+
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS Flashcards(
+               id INTEGER PRIMARY KEY,
+               chapter INTEGER NOT NULL,
+               english TEXT UNIQUE NOT NULL,
+               finnish TEXT NOT NULL
+               )
+""")
+words = [
+    (1, "Hello", "Terve"),
+    (1, "Hi", "Moi"),
+    (2, "One", "Yksi"),
+    (2, "Two", "Kaksi"),
+    (2, "Three", "Kolme"),
+    (3, "Apple", "Omena"),
+    (3, "Banana", "Banani"),
+    (3, "Potato", "Peruna"),
+    (4, "Run", "Juosta"),
+    (4, "Swim", "Uida"),
+    (4, "Speak", "Puhua"),
+    (4, "Go", "Mennä"),
+    (4, "Come", "Tulla")
+
+]
+
+for chapter, english, finnish in words:
+    cursor.execute("INSERT OR IGNORE INTO Flashcards (chapter, english, finnish) VALUES (?, ?, ?)",
+                   (chapter, english, finnish))
+
+conn.commit()
+
+cursor.execute("SELECT * FROM Flashcards")
+rows = cursor.fetchall()
+print(rows)
+
 
 while True:
-    print("Welcome to the Finnish practice game!\nWhich chapter would you like to study? \nUnfortunately, this program is including only 4 chapters. Please chose the chapter you would like to study.")
-    baslik = input('')
+    print("Welcome to the Finnish practice game!\nPlease select chapters 1-4 to practise")
+    baslik = input("")
+
     if baslik.lower() == 'exit':
         print("Thank you for using this program! See you next time!")
         break
 
-    chapter_1 = {
-        "Ja": "And",
-        "Tervetuloa": "Welcome",
-        "Anteeksi": "Excuse me",
-        "Onko": "Is",
-        "Suomen Kurssi": "Course in Finnish",
-        "Joo": "Yes, Yeah",
-        "Kuka sinä olet?": "Who are you?",
-        "Minä": "I",
-        "Olla": "Be",
-        "Sinä": "You",
-        "Hauska tutustua": "Nice to meet with you",
-        "Kiitos samoin": "Likewise",
-        "Mitä sinulle kuuluu?": "How are you?",
-        "Minulle kuuluu hyvää": "I'm fine",
-        "Hän": "He, She",
-        "Kuinka vanha sinä olet?": "How old are you?",
-        "Opettaja": "Teacher",
-        "Tulla": "To Come",
-        "Huomenta": "Good morning",
-        "Mikä sinun nimi on?": "What's your name?",
-        "Minun nimi on …": "My name is …",
-        "Miten se kirjoitetaan?": "How do you spell it?",
-        "Etunimi": "First name",
-        "Sukunimi": "Surname",
-        "Hyvää huomenta": "Good morning",
-        "Päivää": "Afternoon",
-        "Hyvää päivää": "Good afternoon",
-        "Iltaa": "Evening",
-        "Hyvää iltaa": "Good evening",
-        "Hyvää yötä": "Good night",
-        "Nuku hyvin": "Sleep well",
-        "Hei": "Hello",
-        "Moi": "Hi",
-        "Terve": "Hi",
-        "Nähdään": "See you",
-        "Hei hei": "Bye bye",
-        "Nähdään huomenna": "See you tomorrow",
-        "Moi moi": "Bye bye",
-        "Moikka": "Bye bye",
-        "Heippa": "Bye",
-        "Näkemiin": "Goodbye",
-        "Ei": "No",
-        "Kyllä": "Yes",
-        "Ole hyvä": "There you are",
-        "Kiitos": "Thank you",
-        "Ei kestä": "You're welcome",
-        "Ei se mitään": "It's alright",
-        "Viikonpäivät": "Weekdays",
-        "Mikä päivä tänään on": "What day is it today?",
-        "Milloin": "When",
-        "Hauska viikonloppua": "Have a nice weekend",
-        "Maanantai": "Monday",
-        "Tiistai": "Tuesday",
-        "Keskiviikko": "Wednesday",
-        "Torstai": "Thursday",
-        "Perjantai": "Friday",
-        "Lauantai": "Saturday",
-        "Sunnuntai": "Sunday",
-        "Viikonloppu": "Weekend",
-        "Toissapäivänä": "Day before yesterday",
-        "Eilen": "Yesterday",
-        "Tänään": "Today",
-        "Huomenna": "Tomorrow",
-        "Ylihuomenna": "Day after tomorrow",
-        "Nolla": "0",
-        "Yksi": "1",
-        "Kaksi": "2",
-        "Kolme": "3",
-        "Neljä": "4",
-        "Viisi": "5",
-        "Kuusi": "6",
-        "Seitsemän": "7",
-        "Kahdeksan": "8",
-        "Yhdeksän": "9",
-        "Kymmenen": "10",
-        "Yksitoista": "11",
-        "Kaksitoista": "12",
-        "Kolmetoista": "13",
-        "Neljätoista": "14",
-        "Viisitoista": "15",
-        "Kuusitoista": "16",
-        "Seitsemäntoista": "17",
-        "Kahdeksantoista": "18",
-        "Yhdeksäntoista": "19",
-        "Kaksikymmentä": "20",
-        "Sata": "100",
-        "Satayksi": "101",
-        "Kaksisataa": "200",
-        "Tuhat": "1000",
-        "Kaksituhatta": "2000",
-        "Miljoona": "1000000",
-        "Kaksi miljoona": "2000000",
-    }
+    if baslik in ['1', '2', '3', '4']:
+        chapter_num = int(baslik) 
+        print(f"You have choosen Chapter {chapter_num}, let's start!")
+        cursor.execute("Select english, finnish FROM Flashcards WHERE chapter = ?", (chapter_num,))
+        rows = cursor.fetchall()
+        if not rows:
+            print("There is no such chapter.")
+            continue
 
-    chapter_2 = {
-        "Puisto": "Park",
-        "Loppua": "To End",
-        "Kello": "O'clock",
-        "Muu": "Other",
-        "Mennä": "To go",
-        "Koti": "Home",
-        "Kioski": "Market",
-        "Ostaa": "To buy",
-        "Jäätelö": "Ice cream",
-        "Säästää": "To Save",
-        "Sitten": "Then",
-        "Istua": "To sit",
-        "Nauraa": "To laugh",
-        "Minkämaalainen": "Where are you from?",
-        "Brasilialainen": "Brazilian",
-        "Entä": "What about",
-        "Mistä": "Where",
-        "Kotoisin": "From",
-        "Etelä-Afrikka": "South Afrika",
-        "Ai jaa": "Okay",
-        "Äidinkieli": "Mother tongue",
-        "Englanti": "English",
-        "Espanja": "Spanish",
-        "-Ko/Kö": "Express a question",
-        "Sinun": "Your",
-        "Portugali": "Portuguese",
-        "Ai niin": "Right",
-        "Tietysti": "Of course",
-        "Bussipysäkki": "Bus stop",
-        "Asua": "To live",
-        "Numero": "Number",
-        "Nyt": "Now",
-        "Maksaa": "Cost - To pay",
-        "Pallo": "Ball",
-        "Ahaa": "Oh, I see",
-        "Haluaisin": "I would like to",
-        "Suklaa": "Chocolate",
-        "Okei": "Okay",
-        "Sinulle": "For you",
-        "-Kin": "Also",
-        "Vanilja": "Vanilla",
-        "Mansikka": "Strawberry",
-        "Tuleeko muuta": "Anything else?",
-        "Maa": "Country, Land",
-        "Kansalaisuus": "Nationality",
-        "Kieli": "Language, Tongue",
-        "Islanti": "Iceland",
-        "Egypti": "Egypt",
-        "Pakistan": "Pakistan",
-        "Suomalainen": "Finnish",
-        "Ranskalainen": "French",
-        "Kreikkalainen": "Greek",
-        "Islantilainen": "Icelandic",
-        "Egyptilainen": "Egyptian",
-        "Venäläinen": "Russian",
-        "Pakistanilainen": "Pakistani",
-        "Suomi": "Finnish",
-        "Ranska": "French",
-        "Kreikka": "Greek",
-        "Arabia": "Arabic",
-        "Venäjä": "Russian",
-        "Urdu": "Urdu",
-        "Mistä sinä olet kotoisin?": "Where are you from?",
-        "Minkämaalainen sinä olet?": "Which country are you from?",
-        "Mitä kieltä sinä puhut?": "What language do you speak?",
-        "Olla kotoisin": "Come from",
-        "Puhua": "To speak",
-        "Maailma": "World",
-        "Pohjoisnapa": "Northpole",
-        "Pohjois-Amerikka": "North America",
-        "Etelä-Amerikka": "South America",
-        "Eurooppa": "Europe",
-        "Afriikka": "Africa",
-        "Aasia": "Asia",
-        "Australia": "Australia",
-        "Etelämanner": "Southpole",
-        "Ilmansuunnat": "Points of the compass",
-        "Pohjoinen": "North",
-        "Etelä": "South",
-        "Itä": "East",
-        "Länsi": "West",
-        "Hinta": "Price",
-        "Raha": "Money",
-        "Mitä tämä maksaa?": "How much does this cost?",
-        "Euro": "Euro",
-        "Sentti": "Cent",
-        "Seteli": "Paper money, Bill",
-        "Kolikko": "Coin",
-        "Halpa": "Cheap",
-        "Kallis": "Expensive",
-    }
-
-    chapter_3 = {
-        "Sähköposti": "E-mail",
-        "Hyvä": "Good",
-        "Kirjoittaa": "To write",
-        "Lähettäjä": "Sender",
-        "Vastaanottaja": "Recipient",
-        "Otsikko": "Subject",
-        "Terveisiä": "Greetings",
-        "Englanniksi": "In English",
-        "Suomeksi": "In Finnish",
-        "Ymmärtää": "To Understand",
-        "Hassu": "Funny",
-        "Maanantaisin": "On mondays",
-        "Keskiviikkoisin": "On wednesdays",
-        "Torstaisin": "On thursdays",
-        "Meidän": "Our",
-        "Kiva": "Nice",
-        "Minun": "My",
-        "Ystävä": "Friend",
-        "Lukea": "To read",
-        "Uutiset": "News",
-        "Etsiä töitä": "To look for a job",
-        "Joskus": "Sometimes",
-        "Soittaa": "To play",
-        "Kitara": "Guitar",
-        "Olla töissä": "To work",
-        "Opiskelija-Asunto": "Student Apartment",
-        "Muuttaa": "To move",
-        "Ilma": "Weather; air",
-        "Nukkua": "To sleep",
-        "Terveisin": "Greetings",
-        "Missä": "Where",
-        "Täällä": "Here",
-        "Tuolla": "Over there",
-        "Sielä": "There",
-        "Vaan": "But",
-        "Toivottavasti": "Hopefully",
-        "Että": "That",
-        "Myös": "Also",
-        "Yleensä": "Usually",
-        "Siksi": "That's why",
-        "Koska": "Because",
-        "Millainen": "What kind",
-        "Huono": "Bad",
-        "Vaikea": "Hard",
-        "Helppo": "Easy",
-        "Pieni": "Small",
-        "Suuri": "Big",
-        "Uusi": "New",
-        "Ruma": "Ugly",
-        "Valoisa": "Light",
-        "Pimeä": "Dark",
-        "Paljon": "A lot",
-        "Vähän": "A little",
-        "Sää": "Weather",
-        "Aste": "Degree",
-        "Kuuma": "Hot",
-        "Helle": "Heat",
-        "Lämmin": "Warm",
-        "Viielä": "Cool",
-        "Kylmä": "Cold",
-        "Pakkasta": "Frost",
-        "Aurinko": "Sun",
-        "Paistaa": "To shine",
-        "Aurinkoinen": "Sunny",
-        "Pilvinen": "Cloudy",
-        "Puolipilvinen": "Partly cloudy",
-        "Selkeä": "Clear",
-        "Sumuinen": "Foggy",
-        "Sataa": "To rain",
-        "Sateinen": "Rainy",
-        "Räntä": "Sleet",
-        "Lumi": "Snow",
-        "Tuulla": "Wind",
-        "Tuulinen": "Windy",
-        "Myrsky": "Storm",
-        "Ukkonen": "Thunder",
-        "Vuorokausi": "Day",
-        "Aamu": "Morning",
-        "Aamupäivä": "Morning day like 10-12",
-        "Päivä": "Day",
-        "Iltapäivä": "Afternoon",
-        "Ilta": "Evening",
-        "Yö": "Night",
-        "Aamuyö": "Early hours",
-        "Vuodenaika": "Season",
-        "Kevät": "Spring",
-        "Kesä": "Summer",
-        "Syksy": "Autumn, fall",
-        "Talvi": "Winter",
-        "Kaukausi": "Month",
-        "Tammikuu": "January",
-        "Helmikuu": "February",
-        "Maaliskuu": "March",
-        "Huhtikuu": "April",
-        "Toukokuu": "May",
-        "Kesäkuu": "June",
-        "Heinäkuu": "July",
-        "Elokuu": "August",
-        "Syyskuu": "September",
-        "Lokakuu": "October",
-        "Marraskuu": "November",
-        "Joulukuu": "December",
-        "Väri": "Color, colour",
-        "Valkoinen": "White",
-        "Punainen": "Red",
-        "Keltainen": "Yellow",
-        "Vihreä": "Green",
-        "Musta": "Black",
-        "Ruskea": "Brown",
-        "Harmaa": "Grey",
-        "Oranssi": "Orange",
-        "Liila": "Lilac"
-    }
-
-    chapter_4 = {
-        "Teksti": "Text",
-        "Kanssa": "With",
-        "Rakastaa": "To love",
-        "Meillä on": "We have",
-        "4-vuotias": "4 years old",
-        "Tyttö": "Girl",
-        "Mutta": "But",
-        "Bussikuski": "Bus driver",
-        "Minulla ei ole": "I don't have",
-        "Vielä": "Yet; still",
-        "Etsiä": "To look for",
-        "Työpaikka": "Job",
-        "Sama": "Same",
-        "Sininen": "Blue",
-        "Silmä": "Eye",
-        "Kotona": "At home",
-        "Iso": "Big",
-        "Isoveli": "Big brother",
-        "Pikkusisko": "Little sister",
-        "Helsinkiläinen": "From helsinki",
-        "Talo": "House",
-        "Kerros": "Floor, storey",
-        "Huone": "Room",
-        "Keittiö": "Kitchen",
-        "Iloinen": "Happy, Glad",
-        "Kihara": "Curly",
-        "Kauppa": "Shop, store",
-        "Meillä ei ole": "We don't have",
-        "Auto": "Car",
-        "Ajaa": "To drive",
-        "Pyörä": "Bike",
-        "Haluta": "To want",
-        "Ilmoittautua": "Enroll",
-        "Kesäyliopisto": "Summer University",
-        "Toimisto": "Office",
-        "Sihteeri": "Secretary",
-        "Taso": "Level",
-        "Selvä": "Clear",
-        "Seuraava": "Next",
-        "Alkaa": "To start",
-        "Jo": "Already",
-        "Toinen": "another, second",
-        "Parempi": "Better",
-        "Tila": "Room",
-        "Hetkinen": "Just a moment",
-        "Tarkistaa": "To check",
-        "Vapaa": "Free",
-        "Paikka": "Place",
-        "Lista": "List",
-        "Tarvita": "To need",
-        "Henkilötiedot": "Personal details",
-        "Tässä": "Here",
-        "Lomake": "Form",
-        "Millainen hän on?": "What's he/she like?",
-        "Onnellinen": "Happy",
-        "Surullinen": "Sad",
-        "Puhelias": "Talkative",
-        "Hiljainen": "Quiet",
-        "Vihainen": "Angry",
-        "Ystävällinen": "Friendly",
-        "Kohtelias": "Polite",
-        "Epäytävällinen": "Unfriendly",
-        "Epakohtelias": "Impolite",
-        "Nuori": "Young",
-        "Vanha": "Old",
-        "Ujo": "Shy",
-        "Minkänäköinen": "What does he/she look like?",
-        "Vaalea": "Blonde",
-        "Suora": "Straight",
-        "Tukka": "Hair",
-        "Silmät": "Eyes",
-        "Silmälasit": "Eyeglasses",
-        "Kaunis": "Beautiful",
-        "Nätti": "Pretty",
-        "Hyvännäköinen": "Good-looking",
-        "Pitkä": "Tall",
-        "Hoikka": "Slim",
-        "Kalju": "Bald",
-        "Parta": "Beard",
-        "Viikset": "Moustache",
-        "Komea": "Handsome",
-        "Tukeva": "Sturdy",
-        "Lyhyt": "Short",
-        "Tumma": "Dark",
-        "Söpö": "Cute",
-        "Suloinen": "Sweet",
-        "Perhe": "Family",
-        "Isovanhemmat": "Grandparents",
-        "Isoisä": "Grandfather",
-        "Isoäiti": "Grandmother",
-        "Vanhemmat": "Parents",
-        "Isä": "Father",
-        "Äiti": "Mother",
-        "Mies": "Man/Husband",
-        "Vaimo": "Wife",
-        "Lapset": "Children",
-        "Poika": "Son",
-        "Tytär": "Daughter",
-        "Veli": "Brother",
-        "Sisko": "Sister",
-        "Vauva": "Baby",
-        "Naimisissa": "Married",
-        "Naimaton": "Sinkku",
-        "Kihloissa": "Engaged",
-        "Eronnut": "Divorced",
-        "Tyttöystävä": "Girlfriend",
-        "Poikaystävä": "Boyfriend",
-        "Lapsi": "Child",
-        "Töissä": "Working",
-        "Työtön": "Unemployed",
-        "Opiskelija": "Student",
-        "Eläkkeellä": "Retired",
-        "T-Paita": "T-shirt",
-        "Paita": "Shirt",
-        "Villapusero": "Sweater",
-        "Takki": "Coat / Jacket",
-        "Housut": "Pants / Trousers",
-        "Farkut": "Jeans",
-        "Hame": "Skirt",
-        "Shortsit": "Shorts",
-        "Mekko": "Dress",
-        "Puku": "Suit",
-        "Uimapuku": "Swimsuit",
-        "Uimahousut": "Swim trunks",
-        "Sukat": "Socks",
-        "Kengät": "Shoes",
-        "Saappaat": "Boots",
-        "Lenkkarit (Lenkkitossut)": "Sneakers / Trainers",
-        "Alusvaatteet": "Underwear",
-        "Rintaliivit": "Bra",
-        "Alushousut": "Underpants / Panties",
-        "Aluspaita": "Undershirt",
-        "Kalsarit": "Boxers",
-        "Huivi": "Bas ortusu",
-        "Pipo": "Beanie / Winter hat",
-        "Käsineet": "Gloves",
-        "Solmio": "Tie",
-        "Vyö": "Belt",
-        "Kaulaliina": "Scarf",
-        "Sateenvarjo": "Umbrella",
-        "Katsoa": "To look",
-    }
-
-    if baslik == '1': 
-        print("You have chosen Chapter 1, let's start!")
-        for finnish, english in chapter_1.items():
-            print(f"What is the Finnish translation of '{english}'?")
-            answer = input("Your answer: ")
+        for english, finnish in rows:
+            print(f"What is Finnish translation of '{english}'")
+            answer = input("Your answer = ")
             if answer.strip().lower() == finnish.lower():
-                print("Correct!")
+                print("Correct answer!")
             else:
-                print(f"Wrong! The correct answer is: {finnish}")
+                print(f"Unfortunately, wrong answer! Correct answer should be: {finnish}")
 
-    elif baslik == '2':
-        print("You have chosen Chapter 2, let's start!")
-        for finnish, english in chapter_2.items():
-            print(f"What is the Finnish translation of '{english}'?")
-            answer = input("Your answer: ")
-        
-            if answer.strip().lower() == finnish.lower():
-                print("Correct!")
-            else:
-                print(f"Wrong! The correct answer is: {finnish}")
+        change_chapter = input("Would you like to change the chapter? (y)/(n)").lower()
 
-    elif baslik == '3':
-        print("You have chosen Chapter 3, let's start!")
-        for finnish, english in chapter_3.items():
-            print(f"What is the Finnish translation of '{english}'?")
-            answer = input("Your answer: ")
-        
-            if answer.strip().lower() == finnish.lower():
-                print("Correct!")
-            else:
-                print(f"Wrong! The correct answer is: {finnish}")
-
-    elif baslik == '4':
-        print("You have chosen Chapter 4, let's start!")
-        for finnish, english in chapter_4.items():
-            print(f"What is the Finnish translation of '{english}'?")
-            answer = input("Your answer: ")
-        
-            if answer.strip().lower() == finnish.lower():
-                print("Correct!")
-            else:
-                print(f"Wrong! The correct answer is: {finnish}")
-    else:
-            print("There is no such chapter")
-
-    change_chapter = input('Would you like to change the chapter? (y/n): ').lower()
-    if change_chapter.lower() == 'y':
-        print("Thank you for using this program! See you next time!")
-        break
+        if change_chapter != 'y':
+            print("Thank you for using this program! See you next time!")
+            break        
