@@ -17,6 +17,17 @@ A command-line flashcard game for practising Finnish vocabulary, built with Pyth
 - SQLite
 - Docker
 
+## Quick start with Docker
+
+```bash
+git clone https://github.com/iamozansson/Finnish-Practice.git
+cd Finnish-Practice
+docker build -t finnish-practice .
+docker run -it --rm finnish-practice
+```
+
+The application creates the database and inserts the vocabulary on the first run, so no extra setup is needed.
+
 ## How to run locally
 
 ### Requirements
