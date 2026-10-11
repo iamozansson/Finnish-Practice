@@ -19,13 +19,13 @@ words = [
     (2, "Two", "Kaksi"),
     (2, "Three", "Kolme"),
     (3, "Apple", "Omena"),
-    (3, "Banana", "Banani"),
+    (3, "Banana", "Banaani"),
     (3, "Potato", "Peruna"),
-    (4, "Run", "Juosta"),
-    (4, "Swim", "Uida"),
-    (4, "Speak", "Puhua"),
-    (4, "Go", "Mennä"),
-    (4, "Come", "Tulla")
+    (4, "to Run", "Juosta"),
+    (4, "to Swim", "Uida"),
+    (4, "to Speak", "Puhua"),
+    (4, "to Go", "Mennä"),
+    (4, "to Come", "Tulla")
 
 ]
 
@@ -35,13 +35,9 @@ for chapter, english, finnish in words:
 
 conn.commit()
 
-cursor.execute("SELECT * FROM Flashcards")
-rows = cursor.fetchall()
-print(rows)
-
-
 while True:
-    print("Welcome to the Finnish practice game!\nPlease select chapters 1-4 to practise")
+    print("Welcome to the Finnish practice game!")
+    print("Please select chapters 1-4 to practise")
     baslik = input("")
 
     if baslik.lower() == 'exit':
@@ -49,8 +45,8 @@ while True:
         break
 
     if baslik in ['1', '2', '3', '4']:
-        chapter_num = int(baslik) 
-        print(f"You have choosen Chapter {chapter_num}, let's start!")
+        chapter_num = int(baslik)
+        print(f"You have chosen Chapter {chapter_num}, let's start!")
         cursor.execute("Select english, finnish FROM Flashcards WHERE chapter = ?", (chapter_num,))
         rows = cursor.fetchall()
         if not rows:
@@ -63,10 +59,10 @@ while True:
             if answer.strip().lower() == finnish.lower():
                 print("Correct answer!")
             else:
-                print(f"Unfortunately, wrong answer! Correct answer should be: {finnish}")
-
+                print("Unfortunately, wrong answer!")
+                print(f"Correct answer should be: {finnish}")
         change_chapter = input("Would you like to change the chapter? (y)/(n)").lower()
 
         if change_chapter != 'y':
             print("Thank you for using this program! See you next time!")
-            break        
+            break
